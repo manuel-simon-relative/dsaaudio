@@ -12,10 +12,10 @@
     {{this.playlistTitle}} {{this.comingTitles.length}}
     
     
-    <button class="play" (click)="onPlayPause()" (keyup)="onKeyUp($event)">play/pause</button>
-    <button class="next" (click)="onNext()" (keyup)="onKeyUp($event)">next</button>
-    <button class="volumeplus" (click)="onVolumeUp()" (keyup)="onKeyUp($event)">+</button>
+    <button mat-raised-button color="primary" class="play" (click)="onPlayPause()" (keyup)="onKeyUp($event)">play/pause</button>
+    <button mat-raised-button color="primary" class="next" (click)="onNext()" (keyup)="onKeyUp($event)">next</button>
+    <button mat-raised-button color="primary" class="volumeplus" (click)="onVolumeUp()" (keyup)="onKeyUp($event)">+</button>
     {{ this.globalVolume }}
-    <button class="voumemius" (click)="onVolumeDown()" (keyup)="onKeyUp($event)">-</button>
-    <button class="nextplayList" (click)="onNextPlaylist()" (keyup)="onKeyUp($event)">next List</button>
+    <button mat-raised-button color="primary" class="voumemius" (click)="onVolumeDown()" (keyup)="onKeyUp($event)">-</button>
+    <button mat-raised-button color="primary" class="nextplayList" (click)="onNextPlaylist()" (keyup)="onKeyUp($event)">next List</button>
 </div>
