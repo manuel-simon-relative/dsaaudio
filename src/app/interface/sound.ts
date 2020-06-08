@@ -1,4 +1,4 @@
-export interface Sound {
+export interface sound {
     id: number,
     file: String,
     album?: String,

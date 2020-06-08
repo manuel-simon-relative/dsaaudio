@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Howl, Howler} from 'howler';
-import { Sound } from '../../interface/sound';
+import { sound } from '../../interface/sound';
+import { playlist } from '../../interface/playlist';
+import { relSoundList } from '../../interface/rel-sound-list';
+import { db } from '../../service/db.service';
 
 @Component({
   selector: 'app-playercontrol',
@@ -8,50 +11,148 @@ import { Sound } from '../../interface/sound';
   styleUrls: ['./playercontrol.component.sass']
 })
 export class PlayercontrolComponent implements OnInit {
-  
+  withLog:Boolean = false
   sound1
   sound2
+  playing: Boolean = false;
   shuffle:Boolean = true;
   loopSingle:Boolean = false;
-  loopList:Boolean = true;
+  loopList:Boolean = false;
+  selectedPlaylist:number = 2
+  playlistTitle: String = ""
   comingTitles = []
   playedTitles = []
   actualSound = 1
-  actualtitle:string = ""
+  actualTitle: String = ""
   globalVolume = 0.5
-  playlist2 = ["29 Jagdrevier.mp3", "30 Der Flussvater.mp3", "34 Tavernenlied.mp3"]
-  playlist1 = ["01 Sacred.mp3","01 Skalitz 1403.mp3", "05 Beer And Women.mp3"]
   path = "../../../assets/mp3/"
 
   constructor() { }
 
   ngOnInit() {
     
-    this.comingTitles = [];
-    this.playlist1.forEach(e => {
-      this.comingTitles.push(e)      
-    });
-    if (this.shuffle) {
-      this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
+    this.comingTitles = new Array()
+    if (this.withLog) {console.log('Liste für folgende Titel wird gelöscht')}
+    
+    //Titel und Einstellungen der Playlist finden
+    if (this.withLog) {console.log('Titel der ausgewählten Playlist wird gesucht und Einstellungen für die Playlist werden gesetzt.')}
+    db.playlists.forEach(l => {
+      if (l.id == this.selectedPlaylist) {
+        if (this.withLog) {console.log('Playliste zur id ' + l.id + ' gefunden')}
+        this.playlistTitle = l.name
+        if (this.withLog) {console.log('Titel der Liste wird auf ' + l.name + ' gesetzt.')}
+        this.loopList = l.loop
+        if (this.withLog) {console.log('Loop für Playliste: ' + l.loop)}
+        this.shuffle = l.shuffle
+        if (this.withLog) {console.log('Shuffle für Playliste: ' + l.shuffle)}
+        this.loopSingle = false;
+      }
+    })
+
+    //Lieder der Playlist suchen
+    if (this.withLog) {console.log('Lieder für Playliste werden gesucht')}
+    db.relations.forEach(r => {
+      if (r.listid == this.selectedPlaylist) {
+        if (this.withLog) {console.log('Passende Relation gefunden: ' + r.id)}
+        db.sounds.forEach(s => {
+          if (r.soundid == s.id) {
+            if (this.withLog) {console.log('Passendes Lied gefunden: ' + s.id)}
+            this.comingTitles.push(s)
+            if (this.withLog) {console.log('Lied an Listen angehangen: ' + s.songtitle)}
+          }
+        })
+      }
+    })
+    /*
+    this.comingTitles = new Array()
+    var r
+    var s
+    for (r = 0; r < db.relations.length; r++) { 
+      if (db.relations[r].listid == this.selectedPlaylist) {
+        for (s = 0; s < db.sounds.length; s++) {
+          if (db.relations[r].soundid == db.sounds[s].id) {
+            this.comingTitles.push(db.sounds[s])
+          }
+        } 
+      }
+    }
+    console.log(this.comingTitles)
+    */
+
+    if (this.withLog) {console.log('Komplette Liste geladen: ' + this.comingTitles.length)}
+    if (this.withLog) {
+      this.comingTitles.forEach( c => {
+        console.log('id: ' + c.id + '/ name: ' + c.songtitle)
+      })
     }
 
-    this.sound1 = new Howl({
-      src: this.path + this.comingTitles[0],
-      onfade: this.sound1Fade()
+    if (this.shuffle) {
+      if (this.withLog) {console.log('Playlist wird geshuffled')}
+      this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
+    }
+    this.startPlaying()
+    //this.playNextTitle(false)
       
-    });
-    this.actualtitle = this.comingTitles[0]
+
+    this.actualTitle = this.comingTitles[0].songtitle
     this.playedTitles.push(this.comingTitles.shift())
 
-    //this.sound1.play()
-    //this.sound1.fade(0,1,3000);
 
+  }
+
+  ngOnChanges() {
+   
+
+  }
+
+  startPlaying() {
+    var self = this
+    this.sound1 = new Howl({
+      src: this.path + this.comingTitles[0].file,
+      onfade: function() {self.sound1Fade()},
+      onend: function() {self.soundEnd()}
+    })
+
+  }
+
+
+  soundEnd(){
+
+    if (this.loopSingle) {
+      //einzelner Titel soll gelooped werden, daher letzten Title nochmal
+      this.comingTitles.unshift(this.playedTitles.pop())
+      this.playNextTitle(false)
+    } else {
+      if (this.comingTitles.length == 0) {
+        //Wiedergabeliste ist leer
+        if (this.loopList) {
+          //die Liste soll gelooped werden, daher alles aus played nach comming
+          this.playedTitles.forEach(t => {
+            this.comingTitles.push(t)
+          })
+          this.playedTitles = []
+          //shufflen, falls nötig
+          if (this.shuffle) {
+            if (this.withLog) {console.log('Playlist wird geshuffled')}
+            this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
+          }
+          this.playNextTitle(false)
+        } else {
+          //kein loop eingestellt, wiedergabeliste leer, sound abspielen
+        }
+      } else {
+        //WIedergabeliste ist nicht leer, daher einfach nächsten titel abspielen
+        this.playNextTitle(false)
+      }
+    }
+  
+    
   }
 
   sound1Fade(){
     console.log("Sound1Fade: aktuell soll spielen " + this.actualSound)
     if (this.actualSound != 1) {
-      this.sound1.stop
+      this.sound1.stop()
       console.log('sound 1 gestoppt')
     }
   }
@@ -61,7 +162,7 @@ export class PlayercontrolComponent implements OnInit {
     if (this.actualSound != 2) {
       if (this.sound2 != undefined) {
         console.log('sound 2 gestopt')
-        this.sound2.stop
+        this.sound2.stop()
       }
     }
   }
@@ -71,57 +172,117 @@ export class PlayercontrolComponent implements OnInit {
       if (this.sound1.playing()) {
         this.sound1.pause()
         console.log('pause')
+        this.playing = false
       } else {
         this.sound1.play()
+        this.playing = true
         console.log('play')
       }
     } else {
       if (this.sound2.playing()) {
         this.sound2.pause()
+        this.playing = false
         console.log('pause')
       } else {
         this.sound2.play()
+        this.playing = true
         console.log('play')
       }
     }
   }
 
   onNext() {
-    if (this.comingTitles.length>0) {
-      if (this.actualSound == 1 ) {
-        this.actualSound = 2;
-        this.sound1.fade(this.globalVolume, 0, 3000);
-        this.sound2 = new Howl({
-          src: this.path + this.comingTitles[0],
-          onfade: this.sound2Fade()
-          
+    console.log('onNext wird aufgrufen')
+    if (this.comingTitles.length == 0) {
+      console.log('WIedergabe liste ist leer')
+      if (this.loopList) {
+        console.log('es muss gelooped werden')
+        //Loop ist aktiv, daher Liste neu aufsetzen
+        this.playedTitles.forEach(t => {
+          this.comingTitles.push(t)
         })
-        this.actualtitle = this.comingTitles[0]
-        this.playedTitles.push(this.comingTitles.shift())
-        console.log('nächster Titel: sound 2 : ' + this.actualtitle)
-        this.sound2.play()
-        this.sound2.fade(0,this.globalVolume,3000);
-        
-        console.log(this.comingTitles)
-        console.log(this.playedTitles)
+        this.playedTitles = []
+        //shufflen, falls notwenidig
+        if (this.shuffle) {
+          if (this.withLog) {console.log('Playlist wird geshuffled')}
+          this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
+        }
+
+        //nächsten Titel abspielen
+        this.playNextTitle(true)
+      } else {
+        //kein Loop aktiv, nichts mehr zum abspielen
+        //Hinweiston abspielen
+      }
+
+      
+  } else {
+    this.playNextTitle(true)
+  }
+  }
+
+  onToggleLoopList(){
+    if (this.loopList) {
+      this.loopList = false;
+      this.loopSingle = false;
     } else {
-      this.actualSound = 1;
-      this.sound2.fade(this.globalVolume, 0, 3000);
-      this.sound1 = new Howl({
-        src: this.path + this.comingTitles[0],
-        onfade: this.sound1Fade()
+      this.loopList = true;
+    }
+  }
+
+  onToggleLoopSingle(){
+    if (this.loopSingle) {
+      this.loopSingle = false;
+    } else {
+      this.loopSingle = true;
+    }
+  }
+
+
+  playNextTitle(withfade) {
+    var self  = this
+    if (this.actualSound == 1 ) {
+      this.actualSound = 2;
+      if (withfade) {this.sound1.fade(this.globalVolume, 0, 3000);}
+      this.sound2 = null
+      this.sound2 = new Howl({
+        src: this.path + this.comingTitles[0].file,
+        onfade: function () {self.sound2Fade()},
+        onend: function() {self.soundEnd()}
+        
       })
-      this.actualtitle = this.comingTitles[0]
+      this.actualTitle = this.comingTitles[0].songtitle
       this.playedTitles.push(this.comingTitles.shift())
-      console.log('nächster Titel: sound 1 : ' + this.actualtitle)
-      this.sound1.play()
-      this.sound1.fade(0,this.globalVolume,3000);
+      console.log('nächster Titel: sound 2 : ' + this.actualTitle)
+      if (this.playing) { 
+        console.log('Titel geladen und gestartet')
+        this.sound2.play() } else { console.log('Titel geladen aber nicht gestartet') }
+      this.sound2.fade(0,this.globalVolume,3000);
       
       console.log(this.comingTitles)
       console.log(this.playedTitles)
-    }
+  } else {
+    this.actualSound = 1;
+    if (withfade) {this.sound2.fade(this.globalVolume, 0, 3000);}
+    this.sound1 = null
+    this.sound1 = new Howl({
+      src: this.path + this.comingTitles[0].file,
+      onfade: function() {self.sound1Fade()},
+      onend: function() {self.soundEnd()}
+    })
+    this.actualTitle = this.comingTitles[0].songtitle
+    this.playedTitles.push(this.comingTitles.shift())
+    console.log('nächster Titel: sound 1 : ' + this.actualTitle)
+    if (this.playing) { 
+      console.log('Titel geladen und gestartet')
+      this.sound1.play() } else { console.log('Titel geladen aber nicht gestartet') }
+    this.sound1.fade(0,this.globalVolume,3000);
+    
+    console.log(this.comingTitles)
+    console.log(this.playedTitles)
   }
-  }
+    
+}
 
 
 
@@ -142,16 +303,38 @@ export class PlayercontrolComponent implements OnInit {
   }
 
   onNextPlaylist() {
+    this.selectedPlaylist = 2
     this.comingTitles = []
     this.playedTitles = []
-    this.playlist2.forEach(e => {
-      this.comingTitles.push(e)      
-    });
+    
+    //Titel und Einstellungen der Playlist finden
+    db.playlists.forEach(l => {
+      if (l.id == this.selectedPlaylist) {
+        this.playlistTitle = l.name
+        console.log(this.playlistTitle)
+        this.loopList = l.loop
+        this.shuffle = l.shuffle
+        this.loopSingle = false;
+      }
+    })
+
+    //Lieder der Playlist suchen
+    db.relations.forEach(r => {
+      db.sounds.forEach(s => {
+        if (r.listid == this.selectedPlaylist) {
+          if (r.soundid == s.id) {
+            this.comingTitles.push(s)
+          }
+        }
+      })
+    })
+
     if (this.shuffle) {
       this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
-    }
+    
     this.onNext()
   }
+}
 
   onKeyUp(event :any){
     console.log(event)

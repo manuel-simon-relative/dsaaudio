@@ -1,16 +1,15 @@
 
-<div class="content" (keyup)="onKeyUp($event)">
+<div class="content">
     <div class="sounddesc">
         <div class="titledesc">
-            {{this.actualtitle}}
+            {{this.actualTitle}}
         </div>
         <div class="albumdesc">
 
             
         </div>
     </div>
-    <input (keyup)="onKeyUp($event)">
-
+    {{this.playlistTitle}} {{this.comingTitles.length}}
     
     
     <button class="play" (click)="onPlayPause()" (keyup)="onKeyUp($event)">play/pause</button>
