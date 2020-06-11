@@ -6,6 +6,7 @@ import { HeaderComponent } from './template/header/header.component';
 import { PlayercontrolComponent } from './template/playercontrol/playercontrol.component';
 import { ViewPlayComponent } from './template/view-play/view-play.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { KeyboardShortcutsModule } from "ng-keyboard-shortcuts";
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -28,7 +29,8 @@ import { PlaylistcardComponent } from './template/playlistcard/playlistcard.comp
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    KeyboardShortcutsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

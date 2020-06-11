@@ -1,16 +1,18 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, AfterViewInit } from '@angular/core';
 import {Howl, Howler} from 'howler';
 import { sound } from '../../interface/sound';
 import { playlist } from '../../interface/playlist';
 import { relSoundList } from '../../interface/rel-sound-list';
 import { db } from '../../service/db.service';
+import { ShortcutInput, ShortcutEventOutput } from "ng-keyboard-shortcuts";
+
 
 @Component({
   selector: 'app-playercontrol',
   templateUrl: './playercontrol.component.html',
   styleUrls: ['./playercontrol.component.sass']
 })
-export class PlayercontrolComponent implements OnInit {
+export class PlayercontrolComponent implements OnInit , AfterViewInit{
 
   @Input() selectedPlaylist:number = 2
 
@@ -31,6 +33,7 @@ export class PlayercontrolComponent implements OnInit {
   globalVolume = 0.5
   path = "../../../assets/mp3/"
   playlistCange:Boolean = false
+  shortcuts: ShortcutInput[] = [];
 
   constructor() { }
 
@@ -330,6 +333,45 @@ export class PlayercontrolComponent implements OnInit {
 
   onKeyUp(event :any){
     console.log(event)
+  }
+
+  ngAfterViewInit() {
+    this.shortcuts.push(
+      {
+        key: ["1"],
+        label: "Playlist1",
+        description: "Playlist1",
+        command: e => console.log("Taste eins geklickt", { e }),
+        preventDefault: true
+      },
+      {
+        key: ["u"],
+        label: "Volume Up",
+        description: "Volume Up",
+        command: () => this.onVolumeUp()
+      },
+      {
+        key: ["d"],
+        label: "Volume Down",
+        description: "Volume Down",
+        command: () => this.onVolumeDown()
+      },
+      {
+        key: ["p"],
+        label: "Play/Pause",
+        description: "PlayPause",
+        command: () => this.onPlayPause(),
+        preventDefault: true
+      },
+      {
+        key: ["n"],
+        label: "next",
+        command: () => this.onNext(),
+        preventDefault: true
+      }
+      
+    );
+    
   }
 
 }
