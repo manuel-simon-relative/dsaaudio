@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'dsaaudio';
+  selectedPlaylist = 0
+
+  onClickPlaylistChange($event) {
+    this.selectedPlaylist = $event
+  }
 }

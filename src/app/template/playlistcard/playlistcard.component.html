@@ -1,0 +1,27 @@
+<!-- <h2>{{this.playlist.name}} <span>[{{this.playlist.id+1}}]</span> </h2>
+Anzahl der Lieder: {{this.countTitles}} -->
+
+<div class="card" (click)="onClickPlayListChange()">
+    <div class="card-title">{{this.playlist.name}}</div>
+    <div class="card-subtitle">Shortcut: [{{this.playlist.id+1}}]</div>
+    <div class="card-subtitle">Anzahl der Lieder: {{this.countTitles}}</div>
+    <div class="card-content">
+        <p>
+            {{this.playlist.desc}}
+        </p>
+        <div class="soundeffects">
+            <div class="effect1">
+                {{this.soundEffect1}}
+            </div>
+            <div class="effect2">
+                {{this.soundEffect2}}
+            </div>
+        </div>
+    </div>
+    <div class="card-settings">
+        <mat-icon>loop</mat-icon>
+        <mat-icon>shuffle</mat-icon>
+    </div>
+
+</div>
+

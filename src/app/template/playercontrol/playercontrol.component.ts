@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import {Howl, Howler} from 'howler';
 import { sound } from '../../interface/sound';
 import { playlist } from '../../interface/playlist';
@@ -11,6 +11,9 @@ import { db } from '../../service/db.service';
   styleUrls: ['./playercontrol.component.sass']
 })
 export class PlayercontrolComponent implements OnInit {
+
+  @Input() selectedPlaylist:number = 2
+
   withLog:Boolean = false
   sound1
   sound2
@@ -18,20 +21,30 @@ export class PlayercontrolComponent implements OnInit {
   shuffle:Boolean = true;
   loopSingle:Boolean = false;
   loopList:Boolean = false;
-  selectedPlaylist:number = 2
+
   playlistTitle: String = ""
   comingTitles = []
   playedTitles = []
-  actualSound = 1
+  actualSound = 2
   actualTitle: String = ""
+  actualAlbum: String = ""
   globalVolume = 0.5
   path = "../../../assets/mp3/"
+  playlistCange:Boolean = false
 
   constructor() { }
 
   ngOnInit() {
     
+
+
+
+  }
+
+  ngOnChanges() {
+    this.playlistCange =true;
     this.comingTitles = new Array()
+    this.playedTitles = new Array()
     if (this.withLog) {console.log('Liste für folgende Titel wird gelöscht')}
     
     //Titel und Einstellungen der Playlist finden
@@ -63,45 +76,24 @@ export class PlayercontrolComponent implements OnInit {
         })
       }
     })
-    /*
-    this.comingTitles = new Array()
-    var r
-    var s
-    for (r = 0; r < db.relations.length; r++) { 
-      if (db.relations[r].listid == this.selectedPlaylist) {
-        for (s = 0; s < db.sounds.length; s++) {
-          if (db.relations[r].soundid == db.sounds[s].id) {
-            this.comingTitles.push(db.sounds[s])
-          }
-        } 
-      }
-    }
-    console.log(this.comingTitles)
-    */
-
-    if (this.withLog) {console.log('Komplette Liste geladen: ' + this.comingTitles.length)}
-    if (this.withLog) {
-      this.comingTitles.forEach( c => {
-        console.log('id: ' + c.id + '/ name: ' + c.songtitle)
-      })
-    }
-
     if (this.shuffle) {
       if (this.withLog) {console.log('Playlist wird geshuffled')}
       this.comingTitles.sort(function(a, b){return 0.5 - Math.random()});
     }
-    this.startPlaying()
+    if (this.playlistCange) {
+      if (this.sound1 != undefined) {this.sound1.fade(this.globalVolume, 0, 3000)}
+      if (this.sound2 != undefined) {this.sound2.fade(this.globalVolume, 0, 3000)}
+    }
+    this.playNextTitle(false)
+    //this.startPlaying()
     //this.playNextTitle(false)
       
 
-    this.actualTitle = this.comingTitles[0].songtitle
-    this.playedTitles.push(this.comingTitles.shift())
-
-
-  }
-
-  ngOnChanges() {
-   
+    //this.actualTitle = this.comingTitles[0].songtitle
+    //this.actualAlbum = this.comingTitles[0].album
+    //this.playedTitles.push(this.comingTitles.shift())
+  
+    
 
   }
 

@@ -3,10 +3,10 @@
     <app-header></app-header>
   </div>
   <div class="view">
-    <app-view-play></app-view-play>
+    <app-view-play (changePlaylistEvent)="onClickPlaylistChange($event)"></app-view-play>
   </div>
   <div class="playcontrol">
-    <app-playercontrol></app-playercontrol>
+    <app-playercontrol [selectedPlaylist]="this.selectedPlaylist"></app-playercontrol>
   </div>
 </div>
 
