@@ -375,7 +375,7 @@ export class PlayercontrolComponent implements OnInit , AfterViewInit{
 
 
   onVolumeUp(){
-    if (this.globalVolume < 1) {
+    if (this.globalVolume < 0.99) {
       if (this.actualSound == 1) { this.title1.fade(this.globalVolume, this.globalVolume+0.05, 500)}
       if (this.actualSound == 2) { this.title2.fade(this.globalVolume, this.globalVolume+0.05, 500)}
       if (this.isSoundEffect1) {this.soundEffect1.fade(this.globalVolume-0.05, this.globalVolume, 500)}
@@ -385,7 +385,7 @@ export class PlayercontrolComponent implements OnInit , AfterViewInit{
   }
 
   onVolumeDown(){
-    if (this.globalVolume > 0) {
+    if (this.globalVolume > 0.1) {
       if (this.actualSound == 1) { this.title1.fade(this.globalVolume, this.globalVolume-0.05, 500)}
       if (this.actualSound == 2) { this.title2.fade(this.globalVolume, this.globalVolume-0.05, 500)}
       if (this.isSoundEffect1) {this.soundEffect1.fade(this.globalVolume-0.05, this.globalVolume-0.1, 500)}
