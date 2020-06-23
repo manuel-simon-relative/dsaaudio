@@ -9,8 +9,25 @@
             {{this.actualAlbum}}
         </div>
         <div class="playlist">
-            {{this.playlistTitle}} ( {{this.comingTitles.length}} / {{this.comingTitles.length+this.playedTitles.length}} )
+            {{this.playlistTitle}} ( {{this.playedTitles.length}} / {{this.comingTitles.length+this.playedTitles.length}} )
         </div>
+    </div>
+
+    <div class="soundeffects">
+        <button *ngIf="this.isSoundEffect1 && !this.playSoundEffect1" mat-raised-button color="accent" class="soundeffectbutton" (click)="onTooglePlaySoundEffect1()" >
+            <mat-icon>filter_1</mat-icon>
+        </button>
+        <button *ngIf="this.isSoundEffect1 && this.playSoundEffect1" mat-stroked-button color="accent" class="soundeffectbutton" (click)="onTooglePlaySoundEffect1()" >
+            <mat-icon>filter_1</mat-icon>
+        </button>
+        <button *ngIf="this.isSoundEffect2 && !this.playSoundEffect2" mat-raised-button color="accent" class="soundeffectbutton" (click)="onTooglePlaySoundEffect2()" >
+            <mat-icon>filter_2</mat-icon>
+        </button>
+        <button *ngIf="this.isSoundEffect2 && this.playSoundEffect2" mat-stroked-button color="accent" class="soundeffectbutton" (click)="onTooglePlaySoundEffect2()" >
+            <mat-icon>filter_2</mat-icon>
+        </button>
+        
+        
     </div>
     
     <div class="titlecontrol">
@@ -18,8 +35,33 @@
             <mat-icon *ngIf=!this.playing>play_circle_outline</mat-icon>
             <mat-icon *ngIf=this.playing>pause_circle_outline</mat-icon>
         </button>
-        <button mat-raised-button color="primary" class="next" (click)="onNext()">next</button>
+        <button mat-raised-button color="primary" class="next" (click)="onNext()">
+            <mat-icon>skip_next</mat-icon>
+        </button>
 
+    </div>
+
+    <div class="playlistoptions">
+
+        <button *ngIf="!this.loopList" mat-raised-button color="accent" class="loop" (click)="onToggleLoopList()" >
+            <mat-icon>repeat</mat-icon>
+        </button>
+        <button *ngIf="this.loopList" mat-stroked-button color="accent" class="loop" (click)="onToggleLoopList()" >
+            <mat-icon>repeat</mat-icon>
+        </button>
+        <button *ngIf="!this.loopSingle" mat-raised-button color="accent" class="loop" (click)="onToggleLoopSingle()" >
+            <mat-icon>repeat_one</mat-icon>
+        </button>
+        <button *ngIf="this.loopSingle" mat-stroked-button color="accent" class="loop" (click)="onToggleLoopSingle()" >
+            <mat-icon>repeat_one</mat-icon>
+        </button>
+        <button *ngIf="!this.shuffle" mat-raised-button color="accent" class="shuffle" (click)="onShuffle()" >
+            <mat-icon>shuffle</mat-icon>
+        </button>
+        <button *ngIf="this.shuffle" mat-stroked-button color="accent" class="shuffle" (click)="onShuffle()" >
+            <mat-icon>shuffle</mat-icon>
+        </button>
+        
     </div>
     
     <div class="volumecontrol">

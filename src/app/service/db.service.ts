@@ -52,7 +52,11 @@ export class db {
     name: "Rekapitulation",
     desc: "Lieder für die Rekapitulation",
     loop: true,
-    shuffle: true    
+    shuffle: true,
+    soundEffect1: "Regen.mp3",
+    soundEffect1Desc: "Regen" ,
+    soundEffect2: "Regen.mp3",
+    soundEffect2Desc: "Regen"     
    },
    {
     id: 2,
