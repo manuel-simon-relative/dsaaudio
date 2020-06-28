@@ -12,6 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSliderModule} from '@angular/material/slider';
 
 import { PlaylistcardComponent } from './template/playlistcard/playlistcard.component';
 
@@ -30,6 +31,7 @@ import { PlaylistcardComponent } from './template/playlistcard/playlistcard.comp
     MatIconModule,
     MatCardModule,
     MatSlideToggleModule,
+    MatSliderModule,
     KeyboardShortcutsModule.forRoot()
   ],
   providers: [],

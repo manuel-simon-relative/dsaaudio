@@ -23,6 +23,8 @@
     "@angular/platform-browser": "~8.2.7",
     "@angular/platform-browser-dynamic": "~8.2.7",
     "@angular/router": "~8.2.7",
+    "@babel/compat-data": "^7.8.0",
+    "core-js": "^2.6.11",
     "howler": "^2.2.0",
     "ng-keyboard-shortcuts": "^9.0.1",
     "rxjs": "~6.4.0",
@@ -30,7 +32,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.901.7",
+    "@angular-devkit/build-angular": "^0.803.25",
     "@angular/cli": "~8.3.5",
     "@angular/compiler-cli": "~8.2.7",
     "@angular/language-service": "~8.2.7",
@@ -41,14 +43,17 @@
     "electron": "^9.0.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.1.0",
+    "karma": "^5.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "protractor": "~5.4.0",
+    "protractor": "^7.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "@babel/compat-data": "^7.8.0",
+    "@babel/preset-env": "^7.8.0",
+    "babel-loader": "^8.1.0"
   }
 }

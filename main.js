@@ -1,11 +1,13 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
+const devmode = true;
 
 let win;
 
 function createWindow() {
-  win = new BrowserWindow({ width: 800, height: 600 });
+  if (!devmode) {win = new BrowserWindow({ width: 1000, height: 850 })};
+  if (devmode) {win = new BrowserWindow({ width: 1300, heigth: 850 })};
 
   // load the dist folder from Angular
   win.loadURL(
@@ -17,7 +19,7 @@ function createWindow() {
   );
 
   // The following is optional and will open the DevTools:
-  // win.webContents.openDevTools()
+    if (devmode) {win.webContents.openDevTools()}
 
   win.on("closed", () => {
     win = null;
