@@ -3,7 +3,7 @@ Anzahl der Lieder: {{this.countTitles}} -->
 
 <div class="card" (click)="onClickPlayListChange()">
     <div class="content">
-        <div class="card-title">{{this.playlist.name}}</div>
+        <div class="card-title">{{this.playlist.name}}<mat-icon (click)="clickEditPlaylist()" class="icon" *ngIf="this.editMode" color="warn">edit</mat-icon></div>
         <div class="card-subtitle">Shortcut: [{{this.playlist.id+1}}]</div>
         <div class="card-subtitle">Anzahl der Lieder: {{this.countTitles}}</div>
         <div class="card-content">
@@ -25,7 +25,7 @@ Anzahl der Lieder: {{this.countTitles}} -->
         <mat-icon class="icon" *ngIf="!this.playlist.loop" color="basic">loop</mat-icon>
         <mat-icon class="icon" *ngIf="this.playlist.shuffle" color="accent">shuffle</mat-icon>
         <mat-icon class="icon" *ngIf="!this.playlist.shuffle" color="basic">shuffle</mat-icon>
-        <mat-icon class="icon" *ngIf="this.editMode" color="warn">edit</mat-icon>
+        
     </div>
 
 </div>

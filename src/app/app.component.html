@@ -3,7 +3,8 @@
     <app-header (toogleEditEvent)="onClickEditMode($event)"></app-header>
   </div>
   <div class="view">
-    <app-view-play [editMode]="this.editMode" (changePlaylistEvent)="onClickPlaylistChange($event)"></app-view-play>
+    <app-view-play *ngIf="viewcontrol==0"[editMode]="this.editMode" (changePlaylistEvent)="onClickPlaylistChange($event)" (editPlaylistEvent)="onClickEditPlaylist($event)"></app-view-play>
+    <app-vieweditplaylist *ngIf="viewcontrol==1" [playlistIndex]="editPlaylistNumber"></app-vieweditplaylist>
   </div>
   <div class="playcontrol">
     <app-playercontrol [selectedPlaylist]="this.selectedPlaylist"></app-playercontrol>

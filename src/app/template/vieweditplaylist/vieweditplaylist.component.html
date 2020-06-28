@@ -1,0 +1,16 @@
+<div class="content">
+    <div class="buttonbar">
+
+    </div>
+    <div class="playlistSounds">
+        schon dabei:
+        <app-li-playlist-sound *ngFor="let sound of this.SongsInPlaylist" [sound]="sound"></app-li-playlist-sound>
+        
+
+    </div>
+    <div class="restsounds">
+        Noch nicht dabei:
+        <app-li-playlist-sound *ngFor="let sound of this.SongsNotInPlaylist" [sound]="sound"></app-li-playlist-sound>
+
+    </div>
+</div>

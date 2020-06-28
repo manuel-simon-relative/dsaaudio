@@ -15,6 +15,7 @@ export class PlaylistcardComponent implements OnInit {
   @Input() playlistIndex: number
   @Input() editMode: number
   @Output() changePlaylistEvent = new EventEmitter<Number>();
+  @Output() editPlaylistEvent = new EventEmitter<Number>()
   playlist: playlist
   countTitles: number = 0
   soundEffect1:String = ""
@@ -46,6 +47,12 @@ export class PlaylistcardComponent implements OnInit {
   onClickPlayListChange() {
     console.log("PlayListCard: Change to: " + this.playlistIndex)
     this.changePlaylistEvent.emit(this.playlistIndex)
+  }
+
+  clickEditPlaylist() {
+    console.log('möchte Playlist ändern: ' + this.playlistIndex)
+    this.editPlaylistEvent.emit(this.playlistIndex)
+
   }
 
 

@@ -15,6 +15,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 
 import { PlaylistcardComponent } from './template/playlistcard/playlistcard.component';
+import { VieweditplaylistComponent } from './template/vieweditplaylist/vieweditplaylist.component';
+import { LiPlaylistSoundComponent } from './template/vieweditplaylist/li-playlist-sound/li-playlist-sound.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { PlaylistcardComponent } from './template/playlistcard/playlistcard.comp
     HeaderComponent,
     PlayercontrolComponent,
     ViewPlayComponent,
-    PlaylistcardComponent
+    PlaylistcardComponent,
+    VieweditplaylistComponent,
+    LiPlaylistSoundComponent
   ],
   imports: [
     BrowserModule,

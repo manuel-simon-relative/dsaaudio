@@ -8,6 +8,7 @@ import { Component, OnInit, Output,EventEmitter, Input} from '@angular/core';
 export class ViewPlayComponent implements OnInit {
 
   @Output() changePlaylistEvent = new EventEmitter<Number>();
+  @Output() editPlaylistEvent = new EventEmitter<Number>();
   @Input() editMode: Boolean
 
   constructor() { }
@@ -16,12 +17,17 @@ export class ViewPlayComponent implements OnInit {
   }
 
   ngOnChanges() {
-    
+
   }
 
   onClickPlaylistChange($event) {
-    console.log($event)
+
     this.changePlaylistEvent.emit($event)
+  }
+
+  onClickEditPlaylist($event) {
+    console.log('Edit: View: ' + $event)
+    this.editPlaylistEvent.emit($event)
   }
 }
 
