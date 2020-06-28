@@ -8,8 +8,13 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'dsaaudio';
   selectedPlaylist = 0
+  editMode: Boolean = false;
 
   onClickPlaylistChange($event) {
     this.selectedPlaylist = $event
+  }
+  onClickEditMode($event) {
+    console.log('app: ' + $event)
+    this.editMode = $event
   }
 }

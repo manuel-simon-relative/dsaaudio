@@ -25,6 +25,7 @@ Anzahl der Lieder: {{this.countTitles}} -->
         <mat-icon class="icon" *ngIf="!this.playlist.loop" color="basic">loop</mat-icon>
         <mat-icon class="icon" *ngIf="this.playlist.shuffle" color="accent">shuffle</mat-icon>
         <mat-icon class="icon" *ngIf="!this.playlist.shuffle" color="basic">shuffle</mat-icon>
+        <mat-icon class="icon" *ngIf="this.editMode" color="warn">edit</mat-icon>
     </div>
 
 </div>

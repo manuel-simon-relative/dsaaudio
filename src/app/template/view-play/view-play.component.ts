@@ -1,4 +1,4 @@
-import { Component, OnInit, Output,EventEmitter} from '@angular/core';
+import { Component, OnInit, Output,EventEmitter, Input} from '@angular/core';
 
 @Component({
   selector: 'app-view-play',
@@ -8,10 +8,15 @@ import { Component, OnInit, Output,EventEmitter} from '@angular/core';
 export class ViewPlayComponent implements OnInit {
 
   @Output() changePlaylistEvent = new EventEmitter<Number>();
+  @Input() editMode: Boolean
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    
   }
 
   onClickPlaylistChange($event) {

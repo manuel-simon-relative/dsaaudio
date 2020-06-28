@@ -13,11 +13,13 @@ import { VirtualTimeScheduler } from 'rxjs';
 export class PlaylistcardComponent implements OnInit {
 
   @Input() playlistIndex: number
+  @Input() editMode: number
   @Output() changePlaylistEvent = new EventEmitter<Number>();
   playlist: playlist
   countTitles: number = 0
   soundEffect1:String = ""
   soundEffect2:String = ""
+  
 
   constructor() { }
 

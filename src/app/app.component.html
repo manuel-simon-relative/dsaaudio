@@ -1,9 +1,9 @@
 <div class="screen">
   <div class="header">
-    <app-header></app-header>
+    <app-header (toogleEditEvent)="onClickEditMode($event)"></app-header>
   </div>
   <div class="view">
-    <app-view-play (changePlaylistEvent)="onClickPlaylistChange($event)"></app-view-play>
+    <app-view-play [editMode]="this.editMode" (changePlaylistEvent)="onClickPlaylistChange($event)"></app-view-play>
   </div>
   <div class="playcontrol">
     <app-playercontrol [selectedPlaylist]="this.selectedPlaylist"></app-playercontrol>
