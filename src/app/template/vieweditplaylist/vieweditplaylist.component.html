@@ -1,16 +1,111 @@
 <div class="content">
-    <div class="buttonbar">
+    <div class="settingslist">
+
+    </div>
+    <div class="filterbar">
+        <form standalone>
+        <mat-form-field class="example-form-field">
+            <mat-label>nach Titel suchen...</mat-label>
+            <input matInput type="text" [(ngModel)]="this.searchstring" (keyup)="onKeyUpSearchfield()" [ngModelOptions]="{standalone: true}">
+            <button mat-button *ngIf="this.searchstring" matSuffix mat-icon-button aria-label="Clear" (click)="this.searchstring=''" (click)="onKeyUpSearchfield()">
+              <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        </form>
+        <button *ngIf="this.filterOne==-1" (click)="onClickFilter(1)" mat-icon-button aria-label="Filter List One">
+            <mat-icon>filter_1</mat-icon>
+        </button>
+        <button *ngIf="this.filterOne==0" (click)="onClickFilter(1)" mat-icon-button color="primary" aria-label="Filter List One">
+            <mat-icon>filter_1</mat-icon>
+        </button>
+        <button *ngIf="this.filterOne==1" (click)="onClickFilter(1)" mat-icon-button color="accent" aria-label="Filter List One">
+            <mat-icon>filter_1</mat-icon>
+        </button>
+        <button *ngIf="this.filterTwo==-1" (click)="onClickFilter(2)" mat-icon-button aria-label="Filter List Two">
+            <mat-icon>filter_2</mat-icon>
+        </button>
+        <button *ngIf="this.filterTwo==0" (click)="onClickFilter(2)" mat-icon-button color="primary" aria-label="Filter List Two">
+            <mat-icon>filter_2</mat-icon>
+        </button>
+        <button *ngIf="this.filterTwo==1" (click)="onClickFilter(2)" mat-icon-button color="accent" aria-label="Filter List Two">
+            <mat-icon>filter_2</mat-icon>
+        </button>
+        <button *ngIf="this.filterThree==-1" (click)="onClickFilter(3)" mat-icon-button aria-label="Filter List Three">
+            <mat-icon>filter_3</mat-icon>
+        </button>
+        <button *ngIf="this.filterThree==0" (click)="onClickFilter(3)" mat-icon-button color="primary" aria-label="Filter List Three">
+            <mat-icon>filter_3</mat-icon>
+        </button>
+        <button *ngIf="this.filterThree==1" (click)="onClickFilter(3)" mat-icon-button color="accent" aria-label="Filter List Three">
+            <mat-icon>filter_3</mat-icon>
+        </button>
+        <button *ngIf="this.filterFour==-1" (click)="onClickFilter(4)" mat-icon-button aria-label="Filter List Four">
+            <mat-icon>filter_4</mat-icon>
+        </button>
+        <button *ngIf="this.filterFour==0" (click)="onClickFilter(4)" mat-icon-button color="primary" aria-label="Filter List Four">
+            <mat-icon>filter_4</mat-icon>
+        </button>
+        <button *ngIf="this.filterFour==1" (click)="onClickFilter(4)" mat-icon-button color="accent" aria-label="Filter List Four">
+            <mat-icon>filter_4</mat-icon>
+        </button>
+
+        <button *ngIf="this.filterFive==-1" (click)="onClickFilter(5)" mat-icon-button aria-label="Filter List Five">
+            <mat-icon>filter_5</mat-icon>
+        </button>
+        <button *ngIf="this.filterFive==0" (click)="onClickFilter(5)" mat-icon-button color="primary" aria-label="Filter List Five">
+            <mat-icon>filter_5</mat-icon>
+        </button>
+        <button *ngIf="this.filterFive==1" (click)="onClickFilter(5)" mat-icon-button color="accent" aria-label="Filter List Five">
+            <mat-icon>filter_5</mat-icon>
+        </button>
+        <button *ngIf="this.filterSix==-1" (click)="onClickFilter(6)" mat-icon-button aria-label="Filter List Six">
+            <mat-icon>filter_6</mat-icon>
+        </button>
+        <button *ngIf="this.filterSix==0" (click)="onClickFilter(6)" mat-icon-button color="primary" aria-label="Filter List Six">
+            <mat-icon>filter_6</mat-icon>
+        </button>
+        <button *ngIf="this.filterSix==1" (click)="onClickFilter(6)" mat-icon-button color="accent" aria-label="Filter List Six">
+            <mat-icon>filter_6</mat-icon>
+        </button>
+        <button *ngIf="this.filterSeven==-1" (click)="onClickFilter(7)" mat-icon-button aria-label="Filter List Seven">
+            <mat-icon>filter_7</mat-icon>
+        </button>
+        <button *ngIf="this.filterSeven==0" (click)="onClickFilter(7)" mat-icon-button color="primary" aria-label="Filter List Seven">
+            <mat-icon>filter_7</mat-icon>
+        </button>
+        <button *ngIf="this.filterSeven==1" (click)="onClickFilter(7)" mat-icon-button color="accent" aria-label="Filter List Seven">
+            <mat-icon>filter_7</mat-icon>
+        </button>
+        <button *ngIf="this.filterEight==-1" (click)="onClickFilter(8)" mat-icon-button aria-label="Filter List Eight">
+            <mat-icon>filter_8</mat-icon>
+        </button>
+        <button *ngIf="this.filterEight==0" (click)="onClickFilter(8)" mat-icon-button color="primary" aria-label="Filter List Eight">
+            <mat-icon>filter_8</mat-icon>
+        </button>
+        <button *ngIf="this.filterEight==1" (click)="onClickFilter(8)" mat-icon-button color="accent" aria-label="Filter List Eight">
+            <mat-icon>filter_8</mat-icon>
+        </button>
+        <button *ngIf="this.filterNine==-1" (click)="onClickFilter(9)" mat-icon-button aria-label="Filter List Nine">
+            <mat-icon>filter_9</mat-icon>
+        </button>
+        <button *ngIf="this.filterNine==0" (click)="onClickFilter(9)" mat-icon-button color="primary" aria-label="Filter List Nine">
+            <mat-icon>filter_9</mat-icon>
+        </button>
+        <button *ngIf="this.filterNine==1" (click)="onClickFilter(9)" mat-icon-button color="accent" aria-label="Filter List Nine">
+            <mat-icon>filter_9</mat-icon>
+        </button>
+        
 
     </div>
     <div class="playlistSounds">
         schon dabei:
-        <app-li-playlist-sound *ngFor="let sound of this.SongsInPlaylist" [sound]="sound"></app-li-playlist-sound>
+        <app-li-playlist-sound *ngFor="let sound of this.SongsInPlaylist" (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="true" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
         
 
     </div>
     <div class="restsounds">
         Noch nicht dabei:
-        <app-li-playlist-sound *ngFor="let sound of this.SongsNotInPlaylist" [sound]="sound"></app-li-playlist-sound>
+        <app-li-playlist-sound *ngFor="let sound of this.SongsNotInPlaylist" (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="false" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
 
     </div>
 </div>

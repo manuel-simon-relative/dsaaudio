@@ -1,3 +1,27 @@
 <div class="li">
-    {{this.sound.songtitle}}
+    
+    <div class="songinformation">
+        <div class="songtitle">
+            {{this.sound.songtitle}}
+        </div>
+        <div class="album">
+            {{this.sound.album}}
+        </div>
+    </div>
+    <div class="play">
+        <button mat-raised-button color="primary" (click)="onClickPlay()">
+            <mat-icon *ngIf="this.playing && (this.childisplaying == this.sound.id)">pause_circle_outline</mat-icon>
+            <mat-icon *ngIf="!(this.playing && (this.childisplaying == this.sound.id))">play_arrow</mat-icon>
+        </button>
+    </div>
+    <div *ngIf="this.left" class="shifter">
+        <button mat-raised-button color="primary">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+    <div *ngIf="!this.left" class="shifter">
+        <button mat-raised-button color="primary">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+    </div>
 </div>

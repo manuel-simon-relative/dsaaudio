@@ -9,8 +9,8 @@ export class AppComponent {
   title = 'dsaaudio';
   selectedPlaylist = 0
   editMode: Boolean = false;
-  viewcontrol: Number = 0;
-  editPlaylistNumber: Number = 0;
+  viewcontrol: Number = 1;
+  editPlaylistNumber: Number = 1;
 
   onClickPlaylistChange($event) {
     this.selectedPlaylist = $event
