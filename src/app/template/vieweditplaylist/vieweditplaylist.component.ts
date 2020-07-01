@@ -3,6 +3,7 @@ import { sound } from '../../interface/sound';
 import { playlist } from '../../interface/playlist';
 import { relSoundList } from '../../interface/rel-sound-list';
 import { db } from '../../service/db.service';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-vieweditplaylist',
@@ -14,19 +15,13 @@ export class VieweditplaylistComponent implements OnInit {
   @Input() playlistIndex: Number
   SongsInPlaylist = []
   SongsNotInPlaylist = []
+  SearchedList = []
+  filteredList =[]
   childplaying:Number = -1
   playing:Boolean = false
   searchstring:String = ''
 
-  filterOne = 0
-  filterTwo = 0
-  filterThree = 0
-  filterFour = 0
-  filterFive = 0
-  filterSix = 0
-  filterSeven = 0
-  filterEight = 0
-  filterNine = 0
+  filter: number = -2 //-2: keinen Filter / -1: Lieder keiner Liste / ansonsten Lieder mit der Playlistnummer
 
   constructor() { }
 
@@ -49,12 +44,89 @@ export class VieweditplaylistComponent implements OnInit {
         this.SongsNotInPlaylist.push(s)
       }
     });
+    this.createChoosingList()
+
+  }
+
+  createChoosingList() {
+    //erst Filtern der Ursprungsliste
+    this.filteredList = []
+    if (this.filter == -2) {
+      console.log('ich soll keine Titel Filtern')
+      this.SongsNotInPlaylist.forEach(song => {
+        this.filteredList.push(song)        
+      });
+    }
+
+    if (this.filter == -1) {
+      var songNotInAList:Boolean = true
+      this.SongsNotInPlaylist.forEach(song => {
+        songNotInAList = true
+        db.relations.forEach(relation => {
+          if (relation.soundid == song.id) {
+            songNotInAList = false
+          }          
+        });
+        if (songNotInAList) {
+          this.filteredList.push(song)
+        } 
+      });
+      console.log('ich soll alle Lieder zeigen, welche in keiner Liste sind')
+    }
+    if (this.filter >= 0) {
+      console.log('ich soll alle Lieder zeigen, welche der Liste zugeordnet sind: ' + this.filter)
+      this.SongsNotInPlaylist.forEach(song => {
+        db.relations.forEach(relation => {
+          if (relation.soundid == song.id && relation.listid == this.filter ) {
+            this.filteredList.push(song)
+            console.log(song)
+          }
+        });      
+      });
+    }
+    this.SearchedList = []
+    //filterung abgeschlossen
+    //jetzt wird nach Suchstring gefiltert
+    if (this.searchstring == "") {
+      this.filteredList.forEach(song => {
+        this.SearchedList.push(song)
+        
+      });
+    }  else {
+      //hier wird wirklich gesucht
+      
+      var lowercasedSearchString = this.searchstring.toLowerCase()
+      var positionList = []
+      console.log('ich suche nach: ' + lowercasedSearchString)
+      for (var index = 0; index < this.filteredList.length; index++) {
+        var indexOf
+        var indexOfAlbum = this.filteredList[index].album.toLowerCase().indexOf(lowercasedSearchString)
+        var indexOfSongtitle = this.filteredList[index].songtitle.toLowerCase().indexOf(lowercasedSearchString)
+        if (indexOfSongtitle != -1 && indexOfAlbum != -1) {
+          indexOf = Math.min(indexOfAlbum,indexOfSongtitle)
+        } else {
+          indexOf = Math.max(indexOfAlbum, indexOfSongtitle)
+        }
+
+        console.log(index + ' : ' + indexOf)
+        positionList.push( indexOf)
+      }
+      for (var run = 0 ; run < 50 ; run++) {
+        for (var index = 0; index < this.filteredList.length; index++) {
+          if (positionList[index] == run) {
+            this.SearchedList.push(this.filteredList[index])
+          }
+        }
+      }
+
+    }
 
   }
 
   onKeyUpSearchfield() {
     console.log('Textfeld wurde geändert')
     this.onTooglePlaySound(-1)
+    this.createChoosingList()
   }
 
   onTooglePlaySound($event) {
@@ -82,75 +154,13 @@ export class VieweditplaylistComponent implements OnInit {
 
   }
 
-  onClickFilter(List:Number) {
-    switch(List) {
-      case 1:
-        if (this.filterOne == 1) {
-          this.filterOne = -1
-        } else {
-          this.filterOne = this.filterOne+1
-        }
-        break;
-      case 2:
-        if (this.filterTwo == 1) {
-          this.filterTwo = -1
-        } else {
-          this.filterTwo = this.filterTwo+1
-        }
-        break;
-      case 3:
-        if (this.filterThree == 1) {
-          this.filterThree = -1
-        } else {
-          this.filterThree = this.filterThree+1
-        }
-        break;
-      case 4:
-        if (this.filterFour == 1) {
-          this.filterFour = -1
-        } else {
-          this.filterFour = this.filterFour+1
-        }
-        break;
-      case 5:
-        if (this.filterFive == 1) {
-          this.filterFive = -1
-        } else {
-          this.filterFive = this.filterFive+1
-        }
-        break;
-        case 6:
-          if (this.filterSix == 1) {
-            this.filterSix = -1
-          } else {
-            this.filterSix = this.filterSix+1
-          }
-          break;
-        case 7:
-          if (this.filterSeven == 1) {
-            this.filterSeven = -1
-          } else {
-            this.filterSeven = this.filterSeven+1
-          }
-          break;
-        case 8:
-          if (this.filterEight == 1) {
-            this.filterEight = -1
-          } else {
-            this.filterEight = this.filterEight+1
-          }
-          break;
-        case 9:
-          if (this.filterNine == 1) {
-            this.filterNine = -1
-          } else {
-            this.filterNine = this.filterNine+1
-          }
-          break;
-          
-      default:
-        // code block
+  onClickFilter(List:number) {
+    if (this.filter==List) {
+      this.filter = -2
+    } else {
+      this.filter = List
     }
+    this.createChoosingList()
 
   }
 
