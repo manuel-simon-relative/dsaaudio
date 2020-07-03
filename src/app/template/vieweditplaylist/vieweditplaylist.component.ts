@@ -12,7 +12,7 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class VieweditplaylistComponent implements OnInit {
 
-  @Input() playlistIndex: Number
+  @Input() playlistIndex: number
   SongsInPlaylist = []
   SongsNotInPlaylist = []
   SearchedList = []
@@ -47,6 +47,38 @@ export class VieweditplaylistComponent implements OnInit {
     this.createChoosingList()
 
   }
+
+  shiftSound(sound: sound, isInPlaylist: Boolean) {
+    if (isInPlaylist) {
+      for (var index = 0; index < db.relations.length; index++) {
+        if (db.relations[index].listid == this.playlistIndex && db.relations[index].soundid == sound.id) {
+          db.relations.splice(index, 1);
+        }
+    }
+    for (var index = 0; index < this.SongsInPlaylist.length; index++) {
+      if (this.SongsInPlaylist[index] == sound) {
+        this.SongsNotInPlaylist.push(this.SongsInPlaylist.splice(index,1))
+      }
+    }
+  } else {
+    var maxUIDRelation:number = 0;
+    db.relations.forEach(r => {
+      maxUIDRelation = Math.max(r.id, maxUIDRelation)
+    })
+    var newRel: relSoundList = ({
+      id: maxUIDRelation+1,
+      soundid: sound.id,
+      listid: this.playlistIndex 
+    })
+    db.relations.push(newRel)
+    for (var index:number; index < this.SongsNotInPlaylist.length; index++) {
+      if (this.SongsNotInPlaylist[index] == sound) {
+        this.SongsInPlaylist.push(this.SongsNotInPlaylist.splice(index,1))
+      }
+    }
+  }
+  this.createChoosingList()
+}
 
   createChoosingList() {
     //erst Filtern der Ursprungsliste
