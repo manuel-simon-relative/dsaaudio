@@ -13,6 +13,7 @@ import { ThrowStmt } from '@angular/compiler';
 export class VieweditplaylistComponent implements OnInit {
 
   @Input() playlistIndex: number
+  selectedPlaylist: playlist
   SongsInPlaylist = []
   SongsNotInPlaylist = []
   SearchedList = []
@@ -46,8 +47,19 @@ export class VieweditplaylistComponent implements OnInit {
     });
     this.createChoosingList()
 
+    db.playlists.forEach(l => {
+      if (l.id == this.playlistIndex) {
+        this.selectedPlaylist = l
+      }
+    })
+
   }
 
+  /**
+   * Verschiebt angegeben Titel aus bzw. in die Playlist
+   * @param sound :sound - Titel, welcher zwischen den Listen gewechselt werden soll
+   * @param isInPlaylist : Boolean - gibt an, ob Titel bereits in der Liste ist
+   */
   shiftSound(sound: sound, isInPlaylist: Boolean) {
     if (isInPlaylist) {
       for (var index = 0; index < db.relations.length; index++) {
@@ -79,7 +91,9 @@ export class VieweditplaylistComponent implements OnInit {
   }
   this.createChoosingList()
 }
-
+  /**
+   * erstellt die anzeigbare Liste für verfügbare Titel abhängig vom Suchtext und den eingestellten Filtern
+   */
   createChoosingList() {
     //erst Filtern der Ursprungsliste
     this.filteredList = []
@@ -154,13 +168,20 @@ export class VieweditplaylistComponent implements OnInit {
     }
 
   }
-
+  /**
+   * Event, welches bei ändern des Suchfeldes getriggert wird.
+   * Stoppt die Wiedergabe und erstellt neue Liste für verfügbare Titel
+   */
   onKeyUpSearchfield() {
     console.log('Textfeld wurde geändert')
     this.onTooglePlaySound(-1)
     this.createChoosingList()
   }
 
+  /**
+   * Stoppt oder startet den ausgewählten Titel  
+   * @param $event : ID des zu spielenden Titel
+   */
   onTooglePlaySound($event) {
     if ($event == -1) {
       console.log('ich soll gar nichts spielen')
@@ -186,6 +207,10 @@ export class VieweditplaylistComponent implements OnInit {
 
   }
 
+  /**
+   * Setzen des neuen Filters bzw. zurücksetzen des Filters
+   * @param List : number - Angabe des ausgewählten Filters nach Playlist
+   */
   onClickFilter(List:number) {
     if (this.filter==List) {
       this.filter = -2

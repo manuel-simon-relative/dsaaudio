@@ -14,7 +14,7 @@ export class LiPlaylistSoundComponent implements OnInit {
   @Input() left:Boolean = true
 
   @Output() tooglePlayEvent = new EventEmitter<Number>()
-  @Output() shiftElementEvent = new EventEmitter<Number>()
+  @Output() shiftTitleEvent = new EventEmitter<sound>()
 
   constructor() { }
 
@@ -32,5 +32,7 @@ export class LiPlaylistSoundComponent implements OnInit {
     console.log('bitte spiele Sound: ' + this.sound.id)
     this.tooglePlayEvent.emit(this.sound.id)
   }
+
+  
 
 }

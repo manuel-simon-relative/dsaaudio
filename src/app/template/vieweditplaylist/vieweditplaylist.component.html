@@ -1,5 +1,17 @@
 <div class="content">
     <div class="settingslist">
+        <button *ngIf="!this.selectedPlaylist.loop"  mat-raised-button>
+            <mat-icon>loop</mat-icon>
+        </button>
+        <button *ngIf="this.selectedPlaylist.loop"  mat-raised-button="primary">
+            <mat-icon>loop</mat-icon>
+        </button>
+        <button *ngIf="!this.selectedPlaylist.shuffle"  mat-raised-button>
+            <mat-icon>shuffle</mat-icon>
+        </button>
+        <button *ngIf="this.selectedPlaylist.shuffle"  mat-raised-button color="primary">
+            <mat-icon>shuffle</mat-icon>
+        </button>
 
     </div>
     <div class="filterbar">
@@ -76,14 +88,14 @@
 
     </div>
     <div class="playlistSounds">
-        schon dabei:
-        <app-li-playlist-sound *ngFor="let sound of this.SongsInPlaylist" (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="true" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
+        schin in der Liste: 
+        <app-li-playlist-sound *ngFor="let sound of this.SongsInPlaylist" (shiftTitleEvent)="shiftSound($event, true)" (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="true" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
         
 
     </div>
     <div class="restsounds">
         Noch nicht dabei:
-        <app-li-playlist-sound *ngFor="let sound of this.SearchedList" (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="false" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
+        <app-li-playlist-sound *ngFor="let sound of this.SearchedList" (shiftTitleEvent)="shiftSound($event, false)"  (tooglePlayEvent)="onTooglePlaySound($event)" [sound]="sound" [left]="false" [playing]="this.playing" [childisplaying]="childplaying"></app-li-playlist-sound>
 
     </div>
 </div>
